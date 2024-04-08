@@ -1,11 +1,21 @@
-import { Body, Controller, Post, BadRequestException } from '@nestjs/common';
+import { Body, Controller, Post, BadRequestException, Get } from '@nestjs/common';
 import { AccountService } from './accounts.service';
 import { Account } from './schema/accounts.schema';
 import { AccountDto } from './dto/account.dto';
 
+interface AccountBalances {
+    [key: string]: number;
+  }
+  
+  interface AccountBalanceResponse {
+    balances: AccountBalances;
+  }
+
 @Controller('accounts')
 export class AccountController {
     constructor(private accountService: AccountService) {}
+
+    
 
 @Post('topup')
 async topUpAccount(
@@ -19,6 +29,13 @@ async topUpAccount(
         // }
 
         return this.accountService.topUpAccount(accountDto);
+}
+
+@Get('balance')
+async getAllAccountBalance(): Promise<AccountBalanceResponse> {
+    const balances = await this.accountService.getAllAccountBalance();
+    console.log(balances);
+    return balances;
 }
 
 }

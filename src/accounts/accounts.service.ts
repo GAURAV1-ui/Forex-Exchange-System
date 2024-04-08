@@ -25,4 +25,17 @@ export class AccountService {
     
         return account.save();
       }
+
+    async getAllAccountBalance(): Promise<{ balances: {[key: string]: number }}> {
+        const accounts = await this.accountModel.find();
+        const balances = {};
+
+        accounts.forEach((account) => {
+            const balance = String(account.currency);
+            balances[balance] = account.balance;
+            return balance;
+        });
+
+        return {balances};
+    }
 }
