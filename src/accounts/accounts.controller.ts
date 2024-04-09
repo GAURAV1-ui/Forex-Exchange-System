@@ -1,4 +1,4 @@
-import { Body, Controller, Post, BadRequestException, Get } from '@nestjs/common';
+import { Body, Controller, Post, Get } from '@nestjs/common';
 import { AccountService } from './accounts.service';
 import { Account } from './schema/accounts.schema';
 import { AccountDto } from './dto/account.dto';
@@ -34,7 +34,7 @@ async topUpAccount(
 @Get('balance')
 async getAllAccountBalance(): Promise<AccountBalanceResponse> {
     const balances = await this.accountService.getAllAccountBalance();
-    console.log(balances);
+    // console.log(balances);
     return balances;
 }
 
