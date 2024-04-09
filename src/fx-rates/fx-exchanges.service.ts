@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { error } from 'console';
 import * as request from 'request';
+import {v4 as uuidv4} from 'uuid';
 
 
 @Injectable()
@@ -32,5 +33,10 @@ export class FxExchangeService {
               },
             );
           });
+        }
+
+        async generateQuoteId(): Promise<string>{
+            let myuid = uuidv4();
+            return myuid;
         }
 }

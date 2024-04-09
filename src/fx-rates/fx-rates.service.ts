@@ -16,6 +16,8 @@ export class FxRatesService {
         try {
             console.log(fromCurrency, toCurrency);
             const fxRates = await this.fxExchangesService.getExchangeRate(fromCurrency, toCurrency);
+            const uuid = await this.fxExchangesService.generateQuoteId();
+            console.log(uuid);
 
             let convertedAmount = parseFloat((amount * fxRates["Realtime Currency Exchange Rate"]["5. Exchange Rate"]).toFixed(2));
 
@@ -27,9 +29,4 @@ export class FxRatesService {
             console.log(error);
         }
       }
-
-// const fxRatesService = new FxRatesService();
-
-
-// console.log(fxRatesService.fetchFxRates({ from_currency: "usd", to_currency: "inr" }));
     }
