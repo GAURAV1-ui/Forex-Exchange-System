@@ -1,9 +1,10 @@
-import { Body, Controller, Post, Get, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Post, Get, UseGuards, UsePipes, ValidationPipe, Req } from '@nestjs/common';
 import { AccountService } from './accounts.service';
 import { Account } from './schema/accounts.schema';
 import { AccountDto } from './dto/account.dto';
 import { BadRequestException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { User } from 'src/auth/schemas/user.schema';
 
 interface AccountBalances {
   [key: string]: number;
@@ -20,14 +21,18 @@ export class AccountController {
   @Post('topup')
   @UseGuards(AuthGuard())
   @UsePipes(new ValidationPipe({ transform: true })) // Apply validation pipe
-  async topUpAccount(@Body() accountDto: AccountDto): Promise<Account> {
-    const { currency, amount } = accountDto;
+  async topUpAccount(
+    @Body()
+     account: AccountDto,
+     @Req() req,
+    ): Promise<Account> {
+    const { currency, amount } = account;
 
     if (!currency || !amount) {
       throw new BadRequestException('Currency and amount are required');
     }
 
-    return this.accountService.topUpAccount(accountDto);
+    return this.accountService.topUpAccount(account, req.user);
   }
 
   @Get('balance')
