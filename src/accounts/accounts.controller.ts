@@ -1,7 +1,9 @@
-import { Body, Controller, Post, Get } from '@nestjs/common';
+import { Body, Controller, Post, Get, UseGuards } from '@nestjs/common';
 import { AccountService } from './accounts.service';
 import { Account } from './schema/accounts.schema';
 import { AccountDto } from './dto/account.dto';
+import { BadRequestException } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 interface AccountBalances {
     [key: string]: number;
@@ -18,23 +20,24 @@ export class AccountController {
     
 
 @Post('topup')
+@UseGuards(AuthGuard())
 async topUpAccount(
     @Body() 
     accountDto : AccountDto,
     ) : Promise<Account> {
-        // const {currency, amount} = accountDto;
+        const {currency, amount} = accountDto;
 
-        // if(!currency || !amount) {
-        //     throw new BadRequestException('Currency and amount are required');
-        // }
+        if(!currency || !amount) {
+            throw new BadRequestException('Currency and amount are required');
+        }
 
         return this.accountService.topUpAccount(accountDto);
 }
 
 @Get('balance')
+@UseGuards(AuthGuard())
 async getAllAccountBalance(): Promise<AccountBalanceResponse> {
     const balances = await this.accountService.getAllAccountBalance();
-    // console.log(balances);
     return balances;
 }
 
