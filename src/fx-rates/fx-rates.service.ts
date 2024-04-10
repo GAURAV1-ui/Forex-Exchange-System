@@ -48,7 +48,7 @@ export class FxRatesService {
         }
         catch(error) {
             console.log(error);
-        }
+         }
         }
       }
 

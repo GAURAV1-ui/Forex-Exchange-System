@@ -1,8 +1,5 @@
 import { Injectable } from '@nestjs/common';
-// import { Error } from 'console';
 import * as request from 'request';
-// import { from } from 'rxjs';
-// import {v4 as uuidv4} from 'uuid';
 
 
 export interface FxRate {
