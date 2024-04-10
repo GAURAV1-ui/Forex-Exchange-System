@@ -2,25 +2,27 @@ import { Body, Controller, Post, Get, UseGuards, UsePipes, ValidationPipe, Req }
 import { AccountService } from './accounts.service';
 import { Account } from './schema/accounts.schema';
 import { AccountDto } from './dto/account.dto';
+import {  AccountBalanceResponse } from './dto/response.dto';
 import { BadRequestException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { User } from 'src/auth/schemas/user.schema';
+import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { ApiResponse } from '@nestjs/swagger';
 
-interface AccountBalances {
-  [key: string]: number;
-}
 
-interface AccountBalanceResponse {
-  balances: AccountBalances;
-}
 
 @Controller('accounts')
+@ApiTags('Account')
 export class AccountController {
   constructor(private accountService: AccountService) {}
 
   @Post('topup')
-  @UseGuards(AuthGuard())
-  @UsePipes(new ValidationPipe({ transform: true })) // Apply validation pipe
+  @ApiCreatedResponse({
+    description: 'Created user object as response',
+    type: Account
+  })
+  // @UseGuards(AuthGuard())
+  @ApiBearerAuth()
+  @UsePipes(new ValidationPipe({ transform: true })) 
   async topUpAccount(
     @Body()
      account: AccountDto,
@@ -36,8 +38,11 @@ export class AccountController {
   }
 
   @Get('balance')
-  @UseGuards(AuthGuard())
-  async getAllAccountBalance(): Promise<AccountBalanceResponse> {
+  @ApiResponse({ status: 200, description: 'Successfully retrieved account balances', type:  AccountBalanceResponse })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  // @UseGuards(AuthGuard())
+  @ApiBearerAuth()
+  async getAllAccountBalance(): Promise< AccountBalanceResponse> {
     const balances = await this.accountService.getAllAccountBalance();
     return balances;
   }

@@ -1,20 +1,21 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { User } from "src/auth/schemas/user.schema";
+import { User } from "../../auth/schemas/user.schema";
 import mongoose from "mongoose";
+import { ApiProperty } from "@nestjs/swagger";
 
 @Schema({
     timestamps: true
 })
 
 export class Account {
-    @Prop({required: true})
-    currency: String;
+    @Prop({ required: true })
+  currency: string;
 
-    @Prop({required: true})
-    balance: Number;
+  @Prop({ required: true })
+  balance: number;
 
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-    user: User;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  user: mongoose.Types.ObjectId;
 }
 
 export const AccountSchema = SchemaFactory.createForClass(Account);

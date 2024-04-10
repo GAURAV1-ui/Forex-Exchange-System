@@ -35,11 +35,8 @@ export class FxRatesService {
             fxRates.delete(quoteId);
             
         try {
-            console.log("abba");
-            console.log(fromCurrency, toCurrency);
             const fxRate = await this.fxExchangesService.getExchangeRate(fromCurrency, toCurrency);
 
-            console.log(fxRate,"rate");
             const quoteId = fxRate.quoteId;
             rate = fxRates.get(quoteId).rate;
             convertedAmount = rate*amount;

@@ -5,7 +5,7 @@ export class LoginDto {
   
     @ApiProperty({
         description: 'The email address of the user.',
-        example: 'user@example.com',
+        example: 'john@example.com',
       })
       @IsNotEmpty()
       @IsEmail({}, { message: 'Please enter a correct email address' })
