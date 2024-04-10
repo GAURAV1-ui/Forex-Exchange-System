@@ -3,6 +3,7 @@ import { AccountModule } from './accounts/accounts.module';
 import { ConfigModule } from '@nestjs/config';
 import {MongooseModule} from '@nestjs/mongoose';
 import { FxRatesModule } from './fx-rates/fx-rates.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { FxRatesModule } from './fx-rates/fx-rates.module';
     MongooseModule.forRoot(process.env.MONGO_URI),
     AccountModule,
     FxRatesModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

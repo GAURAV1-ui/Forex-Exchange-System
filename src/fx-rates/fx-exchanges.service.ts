@@ -36,13 +36,14 @@ export class FxExchangeService {
                 } else if (res.statusCode !== 200) {
                   reject(new Error(`Status: ${res.statusCode}`));
                 } else {
-                const rate = 123;
+
+                const rate = data["Realtime Currency Exchange Rate"]["5. Exchange Rate"] || 1;
+                
                 const expiryDate = Date.now();
                   fxRates.set(quoteId,{rate:rate, expiryDate: expiryDate});
                     
-                  console.log(data);
-                    return{quoteId,expiryDate}
-                //   resolve(data);
+                    const newData = {quoteId,expiryDate}
+                  resolve(newData);
                 }
               },
             );
