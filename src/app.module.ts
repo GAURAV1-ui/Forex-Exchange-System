@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AccountModule } from './accounts/accounts.module';
 import { ConfigModule } from '@nestjs/config';
 import {MongooseModule} from '@nestjs/mongoose';
@@ -16,7 +14,7 @@ import { FxRatesModule } from './fx-rates/fx-rates.module';
     AccountModule,
     FxRatesModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
