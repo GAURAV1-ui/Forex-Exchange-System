@@ -13,7 +13,7 @@ export class FxRatesService {
         const {quoteId,fromCurrency, toCurrency, amount} = fxRatesDto;
 
         if(!fromCurrency || !toCurrency) 
-            throw Error("value invalid");
+            throw Error("Invalid currency value");
 
         
         let expiryDate = Date.now();
@@ -47,7 +47,8 @@ export class FxRatesService {
             return { convertedAmount: convertedAmount, currency: currency };
         }
         catch(error) {
-            console.log(error);
+            throw new Error('Failed to fetch exchange rate.');
+
          }
         }
       }

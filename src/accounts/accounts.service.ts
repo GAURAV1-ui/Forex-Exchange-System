@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Account } from './schema/accounts.schema'; 
@@ -6,7 +6,6 @@ import { AccountDto } from './dto/account.dto';
 
 @Injectable()
 export class AccountService {
-
     constructor(
         @InjectModel('Account')
         private accountModel: Model<Account>
@@ -14,7 +13,11 @@ export class AccountService {
 
     async topUpAccount(topUpDto: AccountDto): Promise<Account> {
         const { currency, amount } = topUpDto;
-    
+        
+        if (!currency || !amount || isNaN(amount) || amount <= 0) {
+            throw new BadRequestException('Invalid currency or amount.');
+        }
+
         let account = await this.accountModel.findOne({ currency });
     
         if (!account) {
@@ -24,9 +27,9 @@ export class AccountService {
         account.balance = Number(account.balance) + amount;
     
         return account.save();
-      }
+    }
 
-    async getAllAccountBalance(): Promise<{ balances: {[key: string]: number }}> {
+    async getAllAccountBalance(): Promise<{ balances: { [key: string]: number } }> {
         const accounts = await this.accountModel.find();
         const balances = {};
 
@@ -36,6 +39,6 @@ export class AccountService {
             return balance;
         });
 
-        return {balances};
+        return { balances };
     }
 }
