@@ -1,7 +1,9 @@
 import { Body, Controller, Get, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { FxRatesService } from './fx-rates.service';
 import { FxRatesDto } from './dto/fx-rates.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Fx-Rates')
 @Controller()
 export class FxRatesController {
   constructor(private fxRatesService: FxRatesService) {}
